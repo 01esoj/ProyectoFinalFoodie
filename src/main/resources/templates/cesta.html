@@ -1,0 +1,264 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Foodie</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css"
+	rel="stylesheet">
+<script
+	src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+<link rel="stylesheet" type="text/css" href="static/css/cesta.css"
+	th:href="@{/css/cesta.css}">
+
+</head>
+
+<body>
+
+	<div class="container">
+		<header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
+			<div class="col-md-2 mb-2 mb-md-0">
+				<a href="/" class="d-inline-flex link-body-emphasis text-decoration-none">
+					<img class="foodie" src="static/img/foodie.jpg" th:src="@{/img/foodie.jpg}"/>
+				</a>
+			</div>
+
+			<ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
+				<li><a href="/" class="px-5">Menú</a></li>
+				<li><a href="/pedidos" class="px-5">Pedidos</a></li>
+				<li><a href="/promociones" class="px-5">Promociones</a></li>
+				<li th:if="${session.id != null}"><a href="/perfil" class="px-5">Perfil</a></li>
+			</ul>
+			
+			<div th:if="${session.id == null}" class="col-md-4 text-end">
+		        <a href="/login" type="button" class="btn btn-outline-primary btn-lg me-2">Iniciar sesión</a>
+		        <a href="/signup" type="button" class="btn btn-outline-primary btn-lg me-2">Registrarse</a>
+		        <button type="button" class="btn btn-secondary">
+	                <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="currentColor" class="bi-cart" viewBox="0 0 16 16">
+						<path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l1.313 7h8.17l1.313-7H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"></path>
+					</svg>
+					<span id="cartCount" class="notification" style="display: none;" th:if="${session.carrito}" th:text="${session.carrito}"></span>
+              </button>
+			</div>
+			
+			<div th:if="${session.id != null}" class="col-md-3 text-end">
+				<a href="/logout" type="button" class="btn btn-outline-primary btn-lg me-2">Cerrar sesión</a>
+		        <button type="button" class="btn btn-secondary">
+	                <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="currentColor" class="bi-cart" viewBox="0 0 16 16">
+						<path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l1.313 7h8.17l1.313-7H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"></path>
+					</svg>
+					<span id="cartCount" class="notification" style="display: none;" th:if="${session.carrito}" th:text="${session.carrito}"></span>
+              </button>
+			</div>
+			
+		</header>
+	</div>
+
+	<main>
+		
+		<div class="row g-5">
+
+			<div class="col-md-5 col-lg-4 order-md-last">
+				<h4 class="d-flex justify-content-between align-items-center mb-3">
+					<span>Tu carrito</span>
+				</h4>
+				<div th:each="productos:${cesta}">
+					<ul class="list-group mb-3">
+						<li class="list-group-item d-flex justify-content-between lh-sm">
+							<div>
+								<h6 class="my-0" th:text="${productos.nombrePlato}"></h6>
+							</div> 
+							<span class="text-muted" th:text="${productos.precioPlato}+€"></span>
+							<form method="post" th:action="@{/cesta/remove}">
+								<input type="hidden" name="productId" th:value="${productos.idPlato}" />
+								<button type="submit" class="btn btn-outline-primary btn-sm" >Quitar</button>
+							</form>
+						</li>
+
+					</ul>
+				</div>
+				<span>Total </span> <strong th:text="${precio}+€"></strong>
+				<br>
+				<span th:text="${carritovacio}" class="text-danger"></span>
+			</div>
+			<div class="col-md-7 col-lg-8">
+				<h4 class="mb-3">Detalles del pedido</h4>
+				<form th:action="@{/altapedido}" th:object="${pedidosForm}" method="post">
+					<div class="row g-3">
+						<div th:if="${session.id == null}" class="col-12">
+							<label for="firstName" class="form-label">Nombre</label> 
+							<input type="text" pattern="^[a-zA-Z]{3,}$" th:field="*{cliente.nombreCliente}" class="form-control" id="firstName" name="firstName" required>
+						</div>
+
+						<div th:if="${session.id == null}" class="col-12">
+							<label for="email" class="form-label">Email</label> 
+							<input type="email" th:field="*{cliente.correoElectronico}" class="form-control" id="email">
+						</div>
+						
+						<div th:if="${session.id == null}" class="col-12">
+							<label for="email" class="form-label">Teléfono</label>
+							<input type="text" pattern="(6[0-9]{8})" th:field="*{cliente.telefonoCliente}" class="form-control" id="email" required>
+						</div>
+						
+						<div class="col-12">
+							<label for="address" class="form-label">Dirección de envío</label>
+							<input type="text" th:field="*{direccionEnvio}" class="form-control" id="address" required>
+						</div>
+					</div>
+
+					<hr class="my-4">
+
+					<h4 class="mb-3">Método de pago</h4>
+
+					<div class="my-3">
+						<div class="form-check">
+							<input id="efectivo" th:field="*{metodoPago}" name="paymentMethod" type="radio" class="form-check-input" value="efectivo" required onclick="hideCardDetails()">
+							<label class="form-check-label" for="efectivo">Efectivo</label>
+						</div>
+						<div class="form-check">
+							<input id="tarjeta" th:field="*{metodoPago}" name="paymentMethod" type="radio" class="form-check-input" value="tarjeta" onclick="showCardDetails()"> 
+							<label class="form-check-label" for="tarjeta">Tarjeta</label>
+						</div>
+					</div>
+
+					<div class="row gy-3" id="cardDetails" style="display: none;">
+						<div class="col-md-6">
+							<label for="cc-name" class="form-label inputBox">Propietario de tarjeta</label>
+							<input type="text" pattern="^[a-zA-Z]{3,}$" maxlength="40" class="form-control card-holder-input" id="cc-name" placeholder="">
+						</div>
+
+						<div class="col-md-6">
+							<label for="cc-number" class="form-label inputBox">Número</label> 
+							<input type="text" pattern="[0-9]{16}" maxlength="16" class="form-control card-number-input" id="cc-number" placeholder="">
+						</div>
+
+						<div class="col-md-3">
+							<label for="cc-expiration" class="form-label inputBox">Caduca</label>
+							<input type="text" pattern="(0[1-9]|1[0-2])\/(2[3-9]|3[0-6])" maxlength="5" class="form-control card-expirate-input" id="cc-expiration" placeholder="">
+						</div>
+
+						<div class="col-md-3">
+							<label for="cc-cvv" class="form-label inputBox">CVV</label>
+							<input type="text" pattern="[0-9]{3,4}" maxlength="4" class="form-control cvv-input" id="cc-cvv" placeholder="">
+						</div>
+						
+						<div class="checkout">
+
+							<div class="card-container">
+			
+								<div class="front">
+									<div class="image">
+										<img src="static/img/chip.jpg" th:src="@{/img/chip.jpg}" alt=""> 
+										<img src="static/img/visa.png" th:src="@{/img/visa.png}" alt="">
+									</div>
+									<div class="card-number-box">####-####-####-####</div>
+									<div class="flexbox">
+										<div class="box">
+											<span>PROPIETARIO DE TARJETA</span>
+											<div class="card-holder-name"></div>
+										</div>
+										<div class="box">
+											<span>VÁLIDO HASTA</span>
+											<div class="expiration">
+												<span class="exp-month"></span> <span class="exp-year"></span>
+											</div>
+										</div>
+									</div>
+								</div>
+			
+								<div class="back">
+									<div class="stripe"></div>
+									<div class="box">
+										<span>CVV</span>
+										<div class="cvv-box"></div>
+										<img src="static/img/visa.png" th:src="@{/img/visa.png}" alt="">
+									</div>
+								</div>
+			
+							</div>
+								
+						</div>
+					</div>
+					
+					<hr class="my-4">
+
+					<input class="w-100 btn btn-lg" type="submit" value="Confirmar pedido">
+				</form>
+			</div>
+		</div>
+	</main>
+<script>
+	function hideCardDetails() {
+		const cardDetails = document.getElementById('cardDetails');
+        const cardInputs = cardDetails.querySelectorAll('input');
+
+        cardDetails.style.display = 'none';
+
+        cardInputs.forEach(function (input) {
+            input.required = false;
+        });
+	}
+
+	function showCardDetails() {
+		const cardDetails = document.getElementById('cardDetails');
+        const cardInputs = cardDetails.querySelectorAll('input');
+
+        cardDetails.style.display = '';
+
+        cardInputs.forEach(function (input) {
+            input.required = true;
+        });
+	}
+
+	document.querySelector('.card-number-input').oninput = () => {
+		document.querySelector('.card-number-box').innerText = document.querySelector('.card-number-input').value;
+	}
+
+	document.querySelector('.card-holder-input').oninput = () => {
+	    document.querySelector('.card-holder-name').innerText = document.querySelector('.card-holder-input').value;
+	}
+
+	document.querySelector('.card-expirate-input').oninput = () => {
+	    document.querySelector('.expiration').innerText = document.querySelector('.card-expirate-input').value;
+	}
+
+	document.querySelector('.cvv-input').onmouseenter = () => {
+	    document.querySelector('.front').style.transform = 'perspective(1000px) rotateY(-180deg)';
+	    document.querySelector('.back').style.transform = 'perspective(1000px) rotateY(0deg)';
+	}
+
+	document.querySelector('.cvv-input').onmouseleave = () => {
+	    document.querySelector('.front').style.transform = 'perspective(1000px) rotateY(0deg)';
+	    document.querySelector('.back').style.transform = 'perspective(1000px) rotateY(180deg)';
+	}
+
+	document.querySelector('.cvv-input').oninput = () => {
+	    document.querySelector('.cvv-box').innerText = document.querySelector('.cvv-input').value;
+	}
+
+	const ccExpirationInput = document.getElementById('cc-expiration');
+
+    ccExpirationInput.addEventListener('input', function () {
+        const value = this.value;
+        const formattedValue = formatCcExpiration(value);
+        this.value = formattedValue;
+    });
+
+    function formatCcExpiration(value) {
+        // Remover todos los caracteres que no sean números
+        const cleanedValue = value.replace(/\D/g, '');
+
+        // Agregar la barra (/) después de los dos primeros dígitos
+        let formattedValue = cleanedValue;
+        if (cleanedValue.length > 2) {
+            formattedValue = cleanedValue.slice(0, 2) + '/' + cleanedValue.slice(2);
+        }
+
+        return formattedValue;
+    }
+</script>
+</body>
+</html>
+
+

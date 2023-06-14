@@ -1,0 +1,27 @@
+body {
+	padding-bottom: 3rem;
+	color: #5a5a5a;
+}
+
+.nav {
+	font-size: 20px;
+}
+
+li a {
+	color: grey;
+	text-decoration: none;
+}
+
+li a:hover {
+    color: orange;
+}
+
+.btn-lg {
+	color: black;
+	border-color: black;
+}
+
+.btn-outline-primary:hover {
+	background-color: orange;
+    color: white;
+}
