@@ -100,7 +100,7 @@ public class FoodieController {
 		if (loginUser != null && loginUser.getContrasena().equals(loginForm.getContrasena())) {
 			session.setAttribute("id", loginUser.getIdUsuario());
 			session.setAttribute("nombre", loginUser.getNombreUsuario());
-			return "redirect:/";
+			return "redirect:/admin/indexAdmin";
 		} else if (loginCliente != null && loginCliente.getContrasena().equals(loginForm.getContrasena())) {
 			session.setAttribute("id", loginCliente.getIdCliente());
 			session.setAttribute("nombre", loginCliente.getNombreCliente());

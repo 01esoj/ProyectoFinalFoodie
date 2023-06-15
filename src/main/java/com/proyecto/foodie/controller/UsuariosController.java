@@ -90,7 +90,8 @@ public class UsuariosController {
 		return "admin/indexInventario";
 	}
 	@GetMapping("admin/indexCliente")
-	public String empPlantillaCliente() {
+	public String empPlantillaCliente(Model model) {
+		model.addAttribute("listaClientes", clienteRepositorio.findAll());
 		return "admin/indexCliente";
 	}
 	

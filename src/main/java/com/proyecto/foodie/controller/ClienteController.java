@@ -53,10 +53,21 @@ public class ClienteController {
 	@GetMapping("/perfil")
 	public String perfil(SignupForm signupForm, HttpServletRequest request, Model model) {
 		HttpSession session = request.getSession();
-		Cliente cliente = clienteRepository.findById((Integer) session.getAttribute("id")).orElse(null);
-		
-		model.addAttribute("cliente", cliente);
-		return "perfil";
+		if(session.getAttribute("usuario") != null) {
+			if(!session.getAttribute("usuario").equals("ADMIN")) {
+				Cliente cliente = clienteRepository.findById((Integer) session.getAttribute("id")).orElse(null);
+				
+				model.addAttribute("cliente", cliente);
+				return "perfil";
+			}else {
+				return "redirect:/admin/indexAdmin";
+			}
+		}else {
+			Cliente cliente = clienteRepository.findById((Integer) session.getAttribute("id")).orElse(null);
+			
+			model.addAttribute("cliente", cliente);
+			return "perfil";
+		}
 	}
 	
 	@PostMapping("/actualizarPerfil")
@@ -105,13 +116,26 @@ public class ClienteController {
 	public String pedidos(Model model, HttpServletRequest request) {
 		HttpSession session = request.getSession();
 		
-		if(session.getAttribute("id") != null) {
-			Cliente cliente = clienteRepository.findById((Integer) session.getAttribute("id")).orElse(null);
-			List<Pedidos> listaPedidos = pedidosRepository.findByCliente(cliente);
-			model.addAttribute("listaPedidos", listaPedidos);
+		if(session.getAttribute("usuario") != null) {
+			if(!session.getAttribute("usuario").equals("ADMIN")) {
+				if(session.getAttribute("id") != null) {
+					Cliente cliente = clienteRepository.findById((Integer) session.getAttribute("id")).orElse(null);
+					List<Pedidos> listaPedidos = pedidosRepository.findByCliente(cliente);
+					model.addAttribute("listaPedidos", listaPedidos);
+				}
+				return "pedidos";
+			}else {
+				return "redirect:/admin/indexAdmin";
+			}
+		}else {
+			if(session.getAttribute("id") != null) {
+				Cliente cliente = clienteRepository.findById((Integer) session.getAttribute("id")).orElse(null);
+				List<Pedidos> listaPedidos = pedidosRepository.findByCliente(cliente);
+				model.addAttribute("listaPedidos", listaPedidos);
+			}
+			return "pedidos";
 		}
-		
-	    return "pedidos";
+	    
 	}
 	
 	@PostMapping("/cesta/add")
@@ -129,11 +153,25 @@ public class ClienteController {
 	@GetMapping("/cesta")
 	public String mostrarCesta(PedidosForm pedidosForm, Model model, HttpServletRequest request) {
 		HttpSession session = request.getSession();
-		List<Platos> carrito = cesta.getPlatos();
 		
-		model.addAttribute("cesta", carrito);
-		model.addAttribute("precio", cesta.getTotalPrice());
-	    return "cesta";
+		if(session.getAttribute("usuario") != null) {
+			if(!session.getAttribute("usuario").equals("ADMIN")) {
+				List<Platos> carrito = cesta.getPlatos();
+				
+				model.addAttribute("cesta", carrito);
+				model.addAttribute("precio", cesta.getTotalPrice());
+			    return "cesta";
+			}else {
+				return "redirect:/admin/indexAdmin";
+			}
+		}else {
+			List<Platos> carrito = cesta.getPlatos();
+			
+			model.addAttribute("cesta", carrito);
+			model.addAttribute("precio", cesta.getTotalPrice());
+		    return "cesta";
+		}
+			    
 	}
 	
     @PostMapping("/altapedido")
