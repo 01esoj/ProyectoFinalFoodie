@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Inicio</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+  <meta name="theme-color" content="#7952b3">
+</head>
+
+<body>
+
+   <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#">Panel Administrador</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+          <ul class="navbar-nav me-auto mb-2 mb-md-0">
+           <li class="nav-item">
+             <a class="nav-link" href="/admin/indexAdmin">Inicio</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/admin/indexEmpleado">Empleados</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/admin/indexInventario">Inventario</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/admin/altaIngrediente">Ingredientes</a>
+          </li>
+           <li class="nav-item">
+            <a class="nav-link" href="/admin/indexPlato">Platos</a>
+          </li>
+           <li class="nav-item">
+            <a class="nav-link" href="/admin/indexCliente">Clientes</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/logout">Logout</a>
+          </li>
+          </ul>
+          <form class="d-flex">
+            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+            <button class="btn btn-outline-success" type="submit">Search</button>
+          </form>
+        </div>
+      </div>
+    </nav>
+    
+    <div class="p-4">
+  	</div>
+	<div class="p-5 bg-warning text-dark text-center">
+    <h1>Panel de administración de platos</h1>
+    <p>Optimiza tus procesos diarios.</p>
+    <div class="text-warning bg-dark"  th:if="${session.containsKey('error')}"th:text="${session.error}"></div>
+     <h3 class="text-warning bg-dark" th:text=${mensaje}></h3>
+  </div>
+  <div class="container mt-5">
+    <div class="row">
+      <div class="col-sm-4">
+        <div class="card">
+          <img th:src="@{/img/foodie.jpg}" class="card-img-top" alt="Card Image">
+          <div class="card-body">
+            <h5 class="card-title">Alta Plato</h5>
+            <p class="card-text">Control total en tiempo real.</p>
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#myModal">
+			    Alta
+			</button>
+			
+			<!-- The Modal -->
+			<div class="modal" id="myModal">
+			  <div class="modal-dialog modal-xl">
+			    <div class="modal-content">
+			
+			      <!-- Modal Header -->
+			      <div class="modal-header">
+			        <h4 class="modal-title">Panel Administrativo Alta Platos</h4>
+			        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+			      </div>
+			
+			      <!-- Modal body -->
+			      <div class="modal-body">
+			        
+			        <form th:object="${platoForm}" th:action="@{/admin/indexPlato}" method="post" class="was-validated">
+					    <h2>Introduzca datos válidos</h2>
+					    <div class="row">
+					      <div class="col-md-6">
+					        <div class="form-group">
+					          <label for="first">Nombre</label>
+					          <input th:field="*{nombrePlato}" type="text" class="form-control" placeholder="Nombre del plato" required pattern=".{4,}">
+					        	<div class="valid-feedback">
+					     		 ¡Se ve bien!
+								</div>
+					          <div class="invalid-feedback">
+					      		Proporciona un nombre válido.
+					    		</div>
+					        </div>
+					      </div>
+					      <!--  col-md-6   -->
+					
+					      <div class="col-md-6">
+					        <div class="form-group">
+					          <label for="last">Precio</label>
+					          <input th:field="*{precioPlato}" type="text" class="form-control" placeholder="Precio en euros" pattern="[0-9]{1,4}[.][0-9]{1,2}" required >
+					        	<div class="valid-feedback">
+					     		 ¡Se ve bien!
+								</div>
+					          <div class="invalid-feedback">
+					      		Proporciona un precio válido.
+					    		</div>
+					        </div>
+					      </div>
+					      <!--  col-md-6   -->
+					    </div>
+					
+					
+					    <div class="row">
+					      <div class="col-md-6">
+					        <div class="form-group">
+					          <label for="categoria">Categoria</label>
+					          <select class="form-control item" required  th:field="*{categoria}" >
+                                        <option value="Principal">Principal</option>
+                                        <option value="Entrante">Entrante</option>
+                                        <option value="Bebida">Bebida</option>
+                                        <option value="Postre">Postre</option>
+                                        <option value="Promocion">Promocion</option>
+                                    </select>
+					        	<div class="valid-feedback">
+					     		 ¡Se ve bien!
+								</div>
+					          <div class="invalid-feedback">
+					      		Proporciona una categoría válida.
+					    		</div>
+					        </div>
+					
+					
+					      </div>
+					      <!--  col-md-6   -->
+					
+					      <div class="col-md-6">
+					
+					        <div class="form-group">
+					          <label for="phone">Descripcion</label>
+					          <input th:field="*{descripcion}" type="text" class="form-control"  placeholder="Categoria de producto" required pattern=".{8,}">
+					        	<div class="valid-feedback">
+					     		 ¡Se ve bien!
+								</div>
+					          <div class="invalid-feedback">
+					      		Proporciona una descripcion válida.
+					    		</div>
+					        </div>
+					      </div>
+					      <!--  col-md-6   -->
+					    </div>
+					  
+					    <!--  row   -->
+					
+					    <button type="submit" class="btn btn-primary">Submit</button>
+					  </form>
+			        
+			      </div>
+			
+			      <!-- Modal footer -->
+			      <div class="modal-footer">
+			        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+			      </div>
+			
+			    </div>
+			  </div>
+			</div>
+			
+			
+			
+			
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-4">
+        <div class="card">
+          <img th:src="@{/img/foodie.jpg}" class="card-img-top" alt="Card Image">
+          <div class="card-body">
+            <h5 class="card-title">Configurar Plato</h5>
+            <p class="card-text">Optimiza tus procesos diarios.</p>
+           <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#myModal2">
+			    Acceso
+			</button>
+			
+			<!-- The Modal -->
+			<div class="modal" id="myModal2">
+			  <div class="modal-dialog modal-xl">
+			    <div class="modal-content">
+			
+			      <!-- Modal Header -->
+			      <div class="modal-header">
+			        <h4 class="modal-title">Admin Platos</h4>
+			        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+			      </div>
+			
+			      <!-- Modal body -->
+			      <div class="modal-body">
+			        <div class="p-2 text-center">
+   						<div class="container mt-4">
+				    <h2>Lista de Platos</h2>
+				    <table class="table">
+				      <thead>
+				        <tr>
+				          <th>Nombre</th>
+				          <th>Precio</th>
+				          <th>Categoria</th>
+				          <th>Descripcion</th>
+				        </tr>
+				      </thead>
+				      <tbody>
+				        <tr th:each="platos:${listaPlato}">
+				          <td th:text="${platos.nombrePlato}"></td>
+				          <td th:text="${platos.precioPlato}"></td>
+				          <td th:text="${platos.categoria}"></td>
+				          <td th:text="${platos.descripcion}"></td>				    
+				        </tr>
+				      </tbody>
+				    </table>
+				  </div>
+   					</div>
+			      </div>
+			      
+			      <div class="p-2 text-center">
+   				
+		<form th:action="@{/cargarjsonplat2}" method="post" enctype="multipart/form-data">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Cargar Json</h5>
+              <p class="card-text">Introduzca un archivo válido</p>
+          	<input type="file" accept=".json" class="form-control" id="archivo" name="archivo" required/>
+        
+          </div>
+            <button type="submit" class="primary-btn">Enviar</button>
+        </div>
+        </form>
+        </div>
+      	<div class="p-2 text-center">
+   		<div class="container mt-4">
+    	<a type="button" id="exportarBtn" class="btn btn-warning" onclick="exportarToJson()">Exportar JSON</a>
+  	</div>
+   </div>
+			
+			      <!-- Modal footer -->
+			      <div class="modal-footer">
+			        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+			      </div>
+			
+			    </div>
+			  </div>
+			</div>
+					
+			
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-4">
+        <div class="card">
+          <img th:src="@{/img/foodie.jpg}" class="card-img-top" alt="Card Image">
+          <div class="card-body">
+            <h5 class="card-title">Lista Plato</h5>
+            <p class="card-text">Datos precisos, decisiones acertadas.</p>
+             <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#myModal3">
+			    Ver
+			</button>
+			<!-- The Modal -->
+		<div class="modal" id="myModal3">
+		  <div class="modal-dialog modal-xl">
+		    <div class="modal-content">
+		
+		      <!-- Modal Header -->
+		      <div class="modal-header">
+		        <h4 class="modal-title">Modal Heading</h4>
+		        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+		      </div>
+				
+		      <!-- Modal body -->
+		      <div class="modal-body">
+		        <div class="p-2 text-center">
+   					<div class="container mt-4">
+						<form  action="" class="was-validated">
+   					
+    <h2>Lista de Platos</h2>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>Precio</th>
+          <th>Categoria</th>
+          <th>Descripcion</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr th:each="platos:${listaPlato}">
+          <td>
+	       <input type="text" class="form-control"  id="nombrePlato" th:placeholder="${platos.nombrePlato}" disabled>
+	       </td>
+          <td >
+          	  <input type="text" class="form-control" id="precioPlato" th:placeholder="${platos.precioPlato}" disabled>
+          </td>
+          <td >
+               <input type="text" class="form-control"  id="categoria" th:placeholder="${platos.categoria}" disabled>
+          </td>
+          <td >
+               <input type="text" class="form-control"  id="descripcion" th:placeholder="${platos.descripcion}" disabled>
+          </td>
+          <td> <a th:href="@{/admin/editPlatoAd(id=${platos.idPlato})}" type="submit" id="guardarBtn" class="btn btn-success">Ver Plato</a></td>
+          <td> <a th:href="@{/admin/eliminarPlato(id=${platos.idPlato})}"  class="btn btn-danger">Eliminar</a></td>
+        </tr>
+      </tbody>
+    </table>
+    </form>
+  </div>
+   					
+   				</div>
+		      </div>
+		<div class="p-2 text-center">
+   		<a type="button" id="editarBtn" class="btn btn-warning">Habilitar</a>
+	   <button type="button" class="btn btn-secondary" id="cancelarBtn" disabled>Cancelar</button>
+   </div>
+		
+		      <!-- Modal footer -->
+		      <div class="modal-footer">
+		        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+		      </div>
+		
+		    </div>
+		  </div>
+		</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<div class="p-2 text-center">
+   		<a href="/admin/indexAdmin" class="btn btn-primary">Regresar</a>
+   </div>
+
+<script>
+    document.getElementById('editarBtn').addEventListener('click', function() {
+        var inputs = document.querySelectorAll('input[type="text"]');
+        for (var i = 0; i < inputs.length; i++) {
+            inputs[i].disabled = false;
+            inputs[i].value = '';
+        }
+        document.getElementById('guardarBtn').disabled = false;
+        document.getElementById('cancelarBtn').disabled = false;
+        document.getElementById('exportarBtn').disabled = true;
+        
+    });
+
+    document.getElementById('cancelarBtn').addEventListener('click', function() {
+        var inputs = document.querySelectorAll('input[type="text"]');
+        for (var i = 0; i < inputs.length; i++) {
+            inputs[i].disabled = true;
+            inputs[i].value = '';
+        }
+        document.getElementById('guardarBtn').disabled = true;
+        document.getElementById('cancelarBtn').disabled = true;
+        document.getElementById('exportarBtn').disabled = true;
+    });
+
+</script>
+ <script>
+function exportarToJson() {
+    fetch('/platos.json')
+        .then(response => response.json())
+        .then(data => {
+            const fileName = 'platos.json';
+            const dataStr = JSON.stringify({ platos: data });
+            const dataUri = 'data:application/json;charset=utf-8,' + encodeURIComponent(dataStr);
+            const linkElement = document.createElement('a');
+            linkElement.setAttribute('href', dataUri);
+            linkElement.setAttribute('download', fileName);
+            document.body.appendChild(linkElement);
+            linkElement.click();
+            document.body.removeChild(linkElement);
+        })
+        .catch(error => console.error(error));
+}
+</script>
+
+
+</body>
+</html>

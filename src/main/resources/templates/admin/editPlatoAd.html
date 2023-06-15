@@ -58,8 +58,8 @@
   
   <div class="container mt-3">
 		<div class="d-flex flex-wrap ">
-			<form th:object="${inventarioForm}" th:action="@{/admin/editInventario}" method="post" class="was-validated">
-			<div class="p-2" th:each="inventario:${listaInventario}">
+<form th:object="${platoForm}" th:action="@{/admin/editPlatoAd}" method="post" class="was-validated">
+			<div class="p-2" th:each="platos:${listaPlato}">
 				<div class="card">
 					<div class="row g-0">
 						<div
@@ -72,8 +72,8 @@
 									<div class="col-md-6">
 										<ul class="list-group list-group-flush">
 										<li class="list-group-item">
-												<h3>Cantidad:</h3>
-										  	<input type="text" class="form-control" th:field="*{cantidad}" id="cantidad" th:placeholder="${inventario.cantidad}" disabled required>
+												<h3>Nombre:</h3>
+										  <input type="text" class="form-control" th:field="*{nombrePlato}" id="nombrePlato" th:placeholder="${platos.nombrePlato}" disabled>
 											<div class="valid-feedback">
 								     		 ¡Se ve bien!
 											</div>
@@ -83,7 +83,7 @@
 										</li>
 											<li class="list-group-item">
 												<h3>PRECIO :</h3>
-												<input type="text" class="form-control" th:field="*{precioCompra}" id="precioCompra" th:placeholder="${inventario.precioCompra}" disabled required>
+												<input type="text" class="form-control" th:field="*{precioPlato}" id="precioPlato" th:placeholder="${platos.precioPlato}" disabled>
 											</li>
 											
 										</ul>
@@ -91,10 +91,12 @@
 									<div class="col-md-6">
 										<ul class="list-group list-group-flush">
 											<li class="list-group-item">
-											<h3>Proveedor :</h3>
-							               <input type="text" class="form-control" th:field="*{proveedor}" id="proveedor" th:placeholder="${inventario.proveedor}" disabled required>											
+											<h3>Categoria :</h3>
+							               <input type="text" class="form-control" th:field="*{categoria}" id="categoria" th:placeholder="${platos.categoria}" disabled>											
 											</li>
 											<li class="list-group-item">
+											<h3>Descripcion :</h3>											
+								 				<input type="text" class="form-control" th:field="*{descripcion}" id="descripcion" th:placeholder="${platos.descripcion}" disabled>				
 											</li>
 										</ul>
 									</div>
@@ -107,10 +109,13 @@
 	                   					 <button type="button" class="btn btn-primary" id="editarBtn">Editar</button>
 								
 	                				    <button type="button" class="btn btn-secondary" id="cancelarBtn" disabled>Cancelar</button>
+	                				    
 								
 								</div>
 								
 							</div>
+					
+							
 							</div>
 						</div>
 					</div>
@@ -123,7 +128,7 @@
   
 
 <div class="p-2 text-center">
-   		<a href="/admin/indexInventario" class="btn btn-primary">Regresar</a>
+   		<a href="/admin/indexAdmin" class="btn btn-primary">Regresar</a>
    </div>
 
 <script>

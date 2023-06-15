@@ -18,7 +18,7 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarCollapse">
           <ul class="navbar-nav me-auto mb-2 mb-md-0">
-          <li class="nav-item">
+           <li class="nav-item">
              <a class="nav-link" href="/admin/indexAdmin">Inicio</a>
           </li>
           <li class="nav-item">
@@ -50,79 +50,49 @@
     
     <div class="p-4">
   	</div>
-	<div class="p-5 bg-success text-dark text-center">
-    <h1>Panel de administración de inventario</h1>
+	<div class="p-5 bg-primary text-white text-center">
+    <h1>Panel de administración de empleados</h1>
     <p>Optimiza tus procesos diarios.</p>
-        <div class="text-warning bg-dark"  th:if="${session.containsKey('error')}"th:text="${session.error}"></div>
+    <h3 class="text-warning bg-dark" th:text=${mensaje}></h3>
   </div>
-   <div class="container mt-5 ">
-  	<form th:object="${inventarioForm}" th:action="@{/admin/altaInventario}" method="post" class="was-validated">
-    <h2>Inventario</h2>
+  <div class="container mt-5">
     <div class="row">
-      <div class="col-md-6">
-        <div class="form-group">
-          <label for="first">Cantidad</label>
-          <input th:field="*{cantidad}" type="text" class="form-control" placeholder="Cantidad en unidades" pattern="[0-9]{1,3}" required>
-        	 <div class="valid-feedback">
-     		 ¡Se ve bien!
-			</div>
-          <div class="invalid-feedback">
-      		Proporciona una cantidad válido.
-    		</div>
+      <div class="col-sm-4">
+        <div class="card">
+          <img th:src="@{/img/foodie.jpg}" class="card-img-top" alt="Card Image">
+          <div class="card-body">
+            <h5 class="card-title">Alta Empleados</h5>
+            <p class="card-text">Gestiona eficientemente tu equipo de trabajo.</p>
+            <a href="/admin/altaUsuario" class="btn btn-primary">Alta</a>
+          </div>
         </div>
       </div>
-      <!--  col-md-6   -->
-
-      <div class="col-md-6">
-        <div class="form-group">
-          <label for="last">Precio</label>
-          <input th:field="*{precioCompra}" type="text" class="form-control" placeholder="Precio en Euros" pattern="[0-9]{1,4}[.][0-9]{1,2}" required>
-        	 <div class="valid-feedback">
-     		 ¡Se ve bien!
-			</div>
-          <div class="invalid-feedback">
-      		Proporciona un precio válido.
-    		</div>
+      <div class="col-sm-4">
+        <div class="card">
+          <img th:src="@{/img/foodie.jpg}" class="card-img-top" alt="Card Image">
+          <div class="card-body">
+            <h5 class="card-title">Configurar Empleados</h5>
+            <p class="card-text">Simplifica la administración de tus empleados.</p>
+            <a href="/admin/listaUsuarioEdit" class="btn btn-primary">Acceso</a>
+          </div>
         </div>
       </div>
-      <!--  col-md-6   -->
+      <div class="col-sm-4">
+        <div class="card">
+          <img th:src="@{/img/foodie.jpg}" class="card-img-top" alt="Card Image">
+          <div class="card-body">
+            <h5 class="card-title">Lista Empleados</h5>
+            <p class="card-text">Empodera a tus empleados con un panel administrativo intuitivo.</p>
+            <a href="/admin/listaUsuario" class="btn btn-primary">Acceso</a>
+          </div>
+        </div>
+      </div>
     </div>
-
-
-    <div class="row">
-      <div class="col-md-6">
-        <div class="form-group">
-          <label for="company">Proveedor</label>
-          <input th:field="*{proveedor}" type="text" class="form-control" placeholder="Proveedor" id="company" required="required">
-       	 <div class="valid-feedback">
-     		 ¡Se ve bien!
-			</div>
-          <div class="invalid-feedback">
-      		Proporciona un proveedor válido.
-    		</div>
-        </div>
-
-
-      </div>
-      <!--  col-md-6   -->
-
-      
-      <!--  col-md-6   -->
-    </div>
-    <!--  row   -->
-
-
-    
-    <!--  row   -->
-
-    <button type="submit" class="btn btn-primary">Submit</button>
-  </form>
-</div>
+  </div>
   
-<div class="p-2 text-center">
-   		<a href="/admin/indexInventario" class="btn btn-primary">Regresar</a>
+  <div class="p-2 text-center">
+   		<a href="/admin/indexAdmin" class="btn btn-primary">Regresar</a>
    </div>
-
 
 </body>
 </html>

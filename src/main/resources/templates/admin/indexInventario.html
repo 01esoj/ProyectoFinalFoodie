@@ -18,7 +18,7 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarCollapse">
           <ul class="navbar-nav me-auto mb-2 mb-md-0">
-          <li class="nav-item">
+           <li class="nav-item">
              <a class="nav-link" href="/admin/indexAdmin">Inicio</a>
           </li>
           <li class="nav-item">
@@ -54,45 +54,59 @@
     <h1>Panel de administración de inventario</h1>
     <p>Optimiza tus procesos diarios.</p>
         <div class="text-warning bg-dark"  th:if="${session.containsKey('error')}"th:text="${session.error}"></div>
+        <h3 class="text-warning bg-dark" th:text=${mensaje}></h3>
   </div>
   <div class="container mt-5">
-     <form th:object="${ingredientesForm}" th:action="@{/admin/altaIngrediente}" method="post" class="was-validated">
-    <h2>Inventario</h2>
     <div class="row">
-      <div class="col-md-6">
-        <div class="form-group">
-          <label for="first">Nombre</label>
-          <input th:field="*{nombreIngrediente}" type="text" class="form-control" placeholder="Nombre del Ingrediente" required>
-          <div class="valid-feedback">
-     		 ¡Se ve bien!
-			</div>
-          <div class="invalid-feedback">
-      		Proporciona un nombre válido.
-    	</div>
+      <div class="col-sm-4">
+        <div class="card">
+          <img th:src="@{/img/foodie.jpg}" class="card-img-top" alt="Card Image">
+          <div class="card-body">
+            <h5 class="card-title">Alta Inventario</h5>
+            <p class="card-text">Agilidad en pedidos y entregas.</p>
+            <a href="/admin/altaInventario" class="btn btn-primary">Alta</a>
+          </div>
         </div>
       </div>
-      <!--  col-md-6   -->
-      <div class="col-md-6">
-        <div class="form-group">
-          <label for="last">Precio</label>
-          <input th:field="*{precioUnitario}" type="text" class="form-control" placeholder="Precio Unitario" required >
-          <div class="valid-feedback">
-     		 ¡Se ve bien!
-			</div>
-          <div class="invalid-feedback">
-      		Proporciona un nombre válido.
-    		</div>
-        </div>
+      <div class="col-sm-4">
+        <div class="card">
+          <img th:src="@{/img/foodie.jpg}" class="card-img-top" alt="Card Image">
+          <div class="card-body">
+            <h5 class="card-title">Configurar Inventario</h5>
+            <p class="card-text">Simplifica la administración de tus empleados.</p>
+             <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#myModal">
+			    Ver
+			</button>
+             <div class="modal" id="myModal">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title">Modal Heading</h4>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
       </div>
-      <!--  col-md-6   -->
-    </div>
-   
-    <button type="submit" class="btn btn-primary">Submit</button>
-  </form>
-  </div>
-  
-  <div class="container mt-4">
-    <h2>Lista de Ingredientes</h2>
+
+      <!-- Modal body -->
+      <div class="modal-body">
+        
+        <div class="p-2 text-center">
+   		
+   		<form th:action="@{/cargarjsoninve2}" method="post" enctype="multipart/form-data">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Cargar Json</h5>
+              <p class="card-text">Introduzca un archivo válido</p>
+          	<input type="file" accept=".json" class="form-control" id="archivo" name="archivo" required/>
+        
+          </div>
+            <button type="submit" class="primary-btn">Enviar</button>
+        </div>
+        </form>
+   		
+   		</div>
+   		<div class="p-2 text-center">
+   		<div class="container mt-4">
+    <h2>Lista de Ingredientes disponibles</h2>
     <table class="table">
       <thead>
         <tr>
@@ -106,18 +120,43 @@
           <td th:text="${ingredientes.idIngrediente}"></td>
           <td th:text="${ingredientes.nombreIngrediente}"></td>
           <td th:text="${ingredientes.precioUnitario}"></td>
-         
-          
-          <td> <a th:href="@{/admin/delIngrediente(id=${ingredientes.idIngrediente})}" class="btn btn-danger">Eliminar</a></td>
-          
+
         </tr>
       </tbody>
     </table>
   </div>
+   		<h3 class="card-title">Dar de alta ingredientes</h3>
+   		<a href="/admin/altaIngrediente" class="btn btn-primary">Alta ingredientes</a>
+   </div>
+        
+      </div>
 
+      <!-- Modal footer -->
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-4">
+        <div class="card">
+          <img th:src="@{/img/foodie.jpg}" class="card-img-top" alt="Card Image">
+          <div class="card-body">
+            <h5 class="card-title">Lista Inventario</h5>
+            <p class="card-text">Empodera a tus empleados con un panel administrativo intuitivo.</p>
+            <a href="/admin/listaInventario" class="btn btn-primary">Acceso</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
 <div class="p-2 text-center">
-   		<a href="/admin/indexInventario" class="btn btn-primary">Regresar</a>
+   		<a href="/admin/indexAdmin" class="btn btn-primary">Regresar</a>
    </div>
 
 </body>

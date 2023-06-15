@@ -25,10 +25,10 @@
 			</div>
 
 			<ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
-				<li><a href="/" class="px-5">Menú</a></li>
-				<li><a href="/pedidos" class="px-5">Pedidos</a></li>
-				<li><a href="/promociones" class="px-5">Promociones</a></li>
-				<li th:if="${session.id != null}"><a href="/perfil" class="px-5">Perfil</a></li>
+				<li><a href="/" class="px-3">Menú</a></li>
+				<li><a href="/pedidos" class="px-3">Pedidos</a></li>
+				<li><a href="/promociones" class="px-3">Promociones</a></li>
+				<li th:if="${session.id != null}"><a href="/perfil" class="px-5">Perfil: <span th:if="${session.nombre}" th:text="${session.nombre}"></span></a></li>
 			</ul>
 			
 			<div th:if="${session.id == null}" class="col-md-4 text-end">
