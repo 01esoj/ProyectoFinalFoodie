@@ -104,6 +104,7 @@ public class FoodieController {
 		} else if (loginCliente != null && loginCliente.getContrasena().equals(loginForm.getContrasena())) {
 			session.setAttribute("id", loginCliente.getIdCliente());
 			session.setAttribute("nombre", loginCliente.getNombreCliente());
+			session.setAttribute("usuario", "CLIENTE");
 			return "redirect:/";
 		} else {
 			session.setAttribute("error", "Correo o contraseña incorrectos");
@@ -160,12 +161,25 @@ public class FoodieController {
 	
 	@GetMapping("/promociones")
 	public String promociones(Model model, HttpServletRequest request) {
-		
-		Iterable<Platos> itPlatos = platosRepository.findByCategoria("Promocion");
-	    List<Platos> listaPlatos = new ArrayList<>();
-	    itPlatos.forEach(listaPlatos::add);
-	    model.addAttribute("listaPlatos", listaPlatos);
-	    
-		return "promociones";
+		HttpSession session = request.getSession();
+		if(session.getAttribute("usuario") != null) {
+			if(!session.getAttribute("usuario").equals("ADMIN")) {
+				Iterable<Platos> itPlatos = platosRepository.findByCategoria("Promocion");
+			    List<Platos> listaPlatos = new ArrayList<>();
+			    itPlatos.forEach(listaPlatos::add);
+			    model.addAttribute("listaPlatos", listaPlatos);
+			    
+				return "promociones";
+			}else {
+				return "redirect:/admin/indexAdmin";
+			}
+		}else {
+			Iterable<Platos> itPlatos = platosRepository.findByCategoria("Promocion");
+		    List<Platos> listaPlatos = new ArrayList<>();
+		    itPlatos.forEach(listaPlatos::add);
+		    model.addAttribute("listaPlatos", listaPlatos);
+		    
+			return "promociones";
+		}
 	}
 }
