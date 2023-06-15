@@ -15,4 +15,7 @@ public interface IngredientesRepository extends JpaRepository<Ingredientes, Inte
 	
 	@Query("SELECT u.idIngrediente FROM Ingredientes u")
 	List<Integer>findAllByIdIngrediente();
+	
+	@Query(value = "SELECT * FROM ingredientes ORDER BY id_ingrediente ASC LIMIT 3", nativeQuery = true)
+    List<Ingredientes> findFirstThreeIngredients();
 }

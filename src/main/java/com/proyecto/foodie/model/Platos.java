@@ -26,7 +26,6 @@ public class Platos {
 	@NotNull
 	private String categoria;
 	private String descripcion;
-	private String imagen;
 	
 	@ManyToMany(mappedBy="listaPedidos", cascade = CascadeType.PERSIST)
 	private List<Pedidos> listaPedidos;
@@ -42,17 +41,16 @@ public class Platos {
 			name="rel_platos_ingredientes", 
 			joinColumns = @JoinColumn(name="idPlato", nullable=false), 
 			inverseJoinColumns = @JoinColumn(name="idIngrediente", nullable = false))
-	@ManyToMany(cascade = CascadeType.MERGE)
+	@ManyToMany(cascade = CascadeType.PERSIST)
 	private List<Ingredientes> listaIngredientes;
 	
 	public Platos() {}
 	
-	public Platos(String nombrePlato, double precioPlato, String categoria, String descripcion, String imagen) {
+	public Platos(String nombrePlato, double precioPlato, String categoria, String descripcion) {
 		this.nombrePlato = nombrePlato;
 		this.precioPlato = precioPlato;
 		this.categoria = categoria;
 		this.descripcion = descripcion;
-		this.imagen = imagen;
 	}
 
 	public Integer getIdPlato() {
@@ -117,14 +115,6 @@ public class Platos {
 
 	public void setListaIngredientes(List<Ingredientes> listaIngredientes) {
 		this.listaIngredientes = listaIngredientes;
-	}
-	
-	public String getImagen() {
-		return imagen;
-	}
-
-	public void setImagen(String imagen) {
-		this.imagen = imagen;
 	}
 
 	@Override

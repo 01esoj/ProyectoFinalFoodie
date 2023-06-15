@@ -62,41 +62,42 @@ public class ClienteController {
 	@PostMapping("/actualizarPerfil")
 	public String actualizarPerfil(@ModelAttribute("signupForm") @Valid SignupForm signupForm, BindingResult bindingResult, HttpServletRequest request, Model model, RedirectAttributes redirectAttributes) {
 		HttpSession session = request.getSession();
-        
-		Cliente cliente = clienteRepository.findById((Integer) session.getAttribute("id")).orElse(null);
-		
-		if(bindingResult.hasErrors()) {
+		try {
+			Cliente cliente = clienteRepository.findById((Integer) session.getAttribute("id")).orElse(null);
+			
+			if (signupForm.getNombreCliente() != null && !signupForm.getNombreCliente().isEmpty()) {
+			    cliente.setNombreCliente(signupForm.getNombreCliente());
+			    session.setAttribute("nombre", cliente.getNombreCliente());
+			}
+	
+			if (signupForm.getApellidosCliente() != null && !signupForm.getApellidosCliente().isEmpty()) {
+			    cliente.setApellidosCliente(signupForm.getApellidosCliente());
+			}
+	
+			if (signupForm.getTelefonoCliente() != null && !signupForm.getTelefonoCliente().isEmpty()) {
+			    cliente.setTelefonoCliente(Integer.parseInt(signupForm.getTelefonoCliente()));
+			}
+	
+			if (signupForm.getCorreoElectronico() != null && !signupForm.getCorreoElectronico().isEmpty()) {
+			    cliente.setCorreoElectronico(signupForm.getCorreoElectronico());
+			}
+	
+			if (signupForm.getContrasena() != null && !signupForm.getContrasena().isEmpty()) {
+			    cliente.setContrasena(signupForm.getContrasena());
+			}
+	
+			if (signupForm.getTarjetaCredito() != null  && !signupForm.getTarjetaCredito().isEmpty()) {
+			    cliente.setTarjetaCredito(Long.parseLong(signupForm.getTarjetaCredito()));
+			}
+	        
+			clienteRepository.save(cliente);
+			
+			redirectAttributes.addFlashAttribute("mensaje", "Los cambios se guardaron correctamente.");
+			model.addAttribute("signupForm", new SignupForm() );
+		} catch (NumberFormatException e) {
+			redirectAttributes.addFlashAttribute("error", "Los cambios no se guardaron correctamente.");
 			return "redirect:/perfil";
-	    }
-		
-		if (signupForm.getNombreCliente() != null && !signupForm.getNombreCliente().isEmpty()) {
-		    cliente.setNombreCliente(signupForm.getNombreCliente());
 		}
-
-		if (signupForm.getApellidosCliente() != null && !signupForm.getApellidosCliente().isEmpty()) {
-		    cliente.setApellidosCliente(signupForm.getApellidosCliente());
-		}
-
-		if (signupForm.getTelefonoCliente() != null && !signupForm.getTelefonoCliente().isEmpty()) {
-		    cliente.setTelefonoCliente(Integer.parseInt(signupForm.getTelefonoCliente()));
-		}
-
-		if (signupForm.getCorreoElectronico() != null && !signupForm.getCorreoElectronico().isEmpty()) {
-		    cliente.setCorreoElectronico(signupForm.getCorreoElectronico());
-		}
-
-		if (signupForm.getContrasena() != null && !signupForm.getContrasena().isEmpty()) {
-		    cliente.setContrasena(signupForm.getContrasena());
-		}
-
-		if (signupForm.getTarjetaCredito() != null) {
-		    cliente.setTarjetaCredito(signupForm.getTarjetaCredito());
-		}
-        
-		clienteRepository.save(cliente);
-		
-		redirectAttributes.addFlashAttribute("mensaje", "Los cambios se guardaron correctamente.");
-		model.addAttribute("signupForm", new SignupForm());
 	    return "redirect:/perfil";
 	}
 	
@@ -158,7 +159,6 @@ public class ClienteController {
     			    platos.add(platoPersistido);
     			}
 	    		Pedidos pedidoNuevo = new Pedidos(pedidosForm.getDireccionEnvio(), cesta.getTotalPrice(), pedidosForm.getMetodoPago(), cliente, platos);
-	    		System.out.println(pedidoNuevo.getListaPlatos());
 	    		pedidoNuevo = pedidosRepository.save(pedidoNuevo); // Guardar pedido y obtener el objeto persistido
 
 	            // Establecer la relación many-to-many entre los platos y el pedido

@@ -144,7 +144,7 @@ public class FoodieController {
         	return "signup";
         }
         
-		Cliente cliente = new Cliente(signupForm.getDniCliente(), signupForm.getNombreCliente(), signupForm.getApellidosCliente(), Integer.parseInt(signupForm.getTelefonoCliente()), signupForm.getCorreoElectronico(), signupForm.getContrasena(), signupForm.getTarjetaCredito());
+		Cliente cliente = new Cliente(signupForm.getDniCliente(), signupForm.getNombreCliente(), signupForm.getApellidosCliente(), Integer.parseInt(signupForm.getTelefonoCliente()), signupForm.getCorreoElectronico(), signupForm.getContrasena(), Long.parseLong(signupForm.getTarjetaCredito()));
 		clienteRepository.save(cliente);
 		
 	    session.setAttribute("cuenta", "Cuenta creada éxitosamente");

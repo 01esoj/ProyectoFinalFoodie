@@ -2,6 +2,7 @@ package com.proyecto.foodie.model;
 
 import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -28,7 +29,7 @@ public class Ingredientes {
 	@JoinColumn(name="idInventario", insertable = false, updatable = false)
 	private Inventario inventario;
 	
-	@ManyToMany(mappedBy="listaIngredientes")
+	@ManyToMany(mappedBy="listaIngredientes", cascade = CascadeType.PERSIST)
 	private List<Platos> listaPlatos;
 	
 	public Ingredientes() {}

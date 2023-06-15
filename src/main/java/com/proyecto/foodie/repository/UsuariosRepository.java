@@ -12,4 +12,10 @@ public interface UsuariosRepository extends JpaRepository<Usuarios, Integer>{
 	
 	@Query("SELECT u FROM Usuarios u WHERE u.dniUsuario = :dniUsuario")
     Usuarios findByDniUsuario(@Param("dniUsuario") String dniUsuario);
+	
+	@Query("SELECT u FROM Usuarios u WHERE u.telefonoUsuario = :telefono")
+    Usuarios findByTelefono(@Param("telefono") Integer telefono);
+	
+	@Query("SELECT u FROM Empleado u WHERE u.idUsuario = :id")
+    Usuarios findByIdUsuario(@Param("id") Integer id);
 }

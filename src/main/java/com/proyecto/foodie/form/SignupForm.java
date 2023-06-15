@@ -23,12 +23,13 @@ public class SignupForm {
 	@NotNull
 	@Size(min = 4, max = 30, message = "La contraseña debe tener entre 4 y 30 caracteres")
 	private String contrasena;
-	private Long tarjetaCredito;
+	@Size(min = 16, max = 16, message = "La tarjeta de crédito debe 16 caracteres")
+	private String tarjetaCredito;
 	
 	public SignupForm() {}
 
 	public SignupForm(String dniCliente, String nombreCliente, String apellidosCliente, String telefonoCliente,
-			String correoElectronico, String contrasena, Long tarjetaCredito) {
+			String correoElectronico, String contrasena, String tarjetaCredito) {
 		this.dniCliente = dniCliente;
 		this.nombreCliente = nombreCliente;
 		this.apellidosCliente = apellidosCliente;
@@ -86,11 +87,11 @@ public class SignupForm {
 		this.contrasena = contrasena;
 	}
 
-	public Long getTarjetaCredito() {
+	public String getTarjetaCredito() {
 		return tarjetaCredito;
 	}
 
-	public void setTarjetaCredito(Long tarjetaCredito) {
+	public void setTarjetaCredito(String tarjetaCredito) {
 		this.tarjetaCredito = tarjetaCredito;
 	}
 

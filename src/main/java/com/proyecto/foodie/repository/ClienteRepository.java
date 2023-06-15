@@ -14,5 +14,5 @@ public interface ClienteRepository extends JpaRepository<Cliente, Integer>{
 
 	boolean existsByCorreoElectronico(String correoElectronico);
 
-	boolean existsByTarjetaCredito(Long tarjetaCredito);
+	boolean existsByTarjetaCredito(String tarjetaCredito);
 }
